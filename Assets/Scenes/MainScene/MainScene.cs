@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
@@ -11,36 +12,17 @@ public class MainScene : MonoBehaviour
     Session session;
 
 
+    private Dictionary<Type, Type> view2ViewModel;
+
     void Awake()
     {
-        View.GetViewModelType = (viewType) =>
-        {
-            Debug.Log(Application.dataPath);
-
-
-            var types = AppDomain.CurrentDomain.GetAssemblies()
+        view2ViewModel = AppDomain.CurrentDomain.GetAssemblies()
                                 .Where(a => a.GetName().Name == "ViewModels")
-                                .SelectMany(a => a.GetTypes());
+                                .SelectMany(a => a.GetTypes())
+                                .Where(type => type.BaseType.IsGenericType && type.BaseType.GetGenericTypeDefinition() == typeof(ViewModes.ViewModel<,>))
+                                .ToDictionary(type => type.BaseType.GetGenericArguments()[0], type => type);
 
-            foreach(var type in types)
-            {
-                var baseType = type.BaseType;
-                if(baseType != null)
-                {
-                    if (baseType.IsGenericType && baseType.GetGenericTypeDefinition() == typeof(ViewModes.ViewModel<,>))
-                    {
-                        var args = baseType.GetGenericArguments();
-                        if(args[0] == viewType)
-                        {
-                            return type;
-                        }
-                    }
-                }
-            }
-
-
-            return null;
-        };
+        View.GetViewModelType = (viewType) => view2ViewModel[viewType];
     }
 
     void Start()
