@@ -4,11 +4,12 @@ public class MainView : View
 {
     public Text popNum;
 
-    //public MapDialogView mapDialogView;
+    public MapDialogView mapDialogView;
 
     public void OnShowMapDialog()
     {
-        //mapDialogView.model = model;
-        //mapDialogView.gameObject.SetActive(true);
+        var dialog = Instantiate(mapDialogView, mapDialogView.transform.parent);
+        dialog.model = model;
+        dialog.gameObject.SetActive(true);
     }
 }

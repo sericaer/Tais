@@ -2324,7 +2324,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 442681025}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2aedaec780308545b3ef38df25a63e3, type: 3}
+  m_Script: {fileID: 11500000, guid: 69d897d813947424cb12cc25786843a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!225 &442681031
@@ -5723,6 +5723,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popNum: {fileID: 2106184403}
+  mapDialogView: {fileID: 442681030}
 --- !u!1 &995020547
 GameObject:
   m_ObjectHideFlags: 0
@@ -7626,17 +7627,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 442681025}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 992524165}
+        m_TargetAssemblyTypeName: MainView, Views
+        m_MethodName: OnShowMapDialog
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1413272197
 MonoBehaviour:
