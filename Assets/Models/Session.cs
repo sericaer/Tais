@@ -7,6 +7,8 @@ public class Session : INotifyPropertyChanged
 
     public int popNum { get; set; }
 
+    public Date date { get; } = new Date();
+
     public ICommand nextTurnCommand { get; }
 
 

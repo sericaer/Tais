@@ -5926,8 +5926,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popNum: {fileID: 2106184403}
+  year: {fileID: 1552677478}
+  month: {fileID: 1516068971}
+  day: {fileID: 193889379}
   mapDialogView: {fileID: 442681030}
-  nextTurnButton: {fileID: 0}
+  nextTurnButton: {fileID: 495946008}
 --- !u!1 &995020547
 GameObject:
   m_ObjectHideFlags: 0
