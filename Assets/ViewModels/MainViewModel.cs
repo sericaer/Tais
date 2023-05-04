@@ -5,6 +5,9 @@
         public override void OnBindContext(MainView view, Session model)
         {
             view.popNum.BindOneWay(x => x.text).From(model, model => model.popNum, (num) => num.ToString()).RegistTo(this);
+
+
+            view.nextTurnButton.BindCommand().From(model.nextTurnCommand).RegistTo(this);
         }
     }
 }

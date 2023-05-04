@@ -6,6 +6,8 @@ public class MainView : View
 
     public MapDialogView mapDialogView;
 
+    public Button nextTurnButton;
+
     public void OnShowMapDialog()
     {
         var dialog = Instantiate(mapDialogView, mapDialogView.transform.parent);
