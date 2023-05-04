@@ -32,7 +32,7 @@ public class MainScene : MonoBehaviour
         mainView.model = session;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         session.Run();
     }
