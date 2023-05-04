@@ -7,45 +7,20 @@ using System.Linq;
 using System.Reactive.Disposables;
 using System.Reflection;
 
-public class Session : INotifyPropertyChanged, IDisposable
+public class Session : ModelObject, INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler PropertyChanged;
+
+    public bool isRunning { get; set; } = true;
 
     public int popNum { get; set; }
 
     public Date date { get; } = new Date();
 
-    public ICommand nextTurnCommand { get; }
-
-    public bool isRunning { get; set; } = true;
-
-
-    protected MessageBus messageBus;
-    private CompositeDisposable disposables = new CompositeDisposable();
-
-
     public Session()
     {
-        messageBus = new MessageBus(this);
-
-        nextTurnCommand = new Command()
-        {
-            action = () =>
-            {
-                isRunning = true;
-            }
-        };
-
         Subcribe(date.WhenValueChanged(x => x.month), _ => messageBus.Publish(new MESSAGE_MONTH_INC(date.year, date.month)));
-        Subcribe(this.WhenValueChanged(x => x.isRunning), flag => nextTurnCommand.isEnable = !flag);
-
     }
-
-    private void Subcribe<T>(IObservable<T> observable, Action<T> p)
-    {
-        disposables.Add(observable.Subscribe(p));
-    }
-
 
     public void Run()
     {
@@ -59,11 +34,6 @@ public class Session : INotifyPropertyChanged, IDisposable
     public void OnMESSAGE_MONTH_INC(MESSAGE_MONTH_INC msg)
     {
         isRunning = false;
-    }
-
-    public void Dispose()
-    {
-        disposables.Dispose();
     }
 }
 
@@ -83,7 +53,7 @@ public class MESSAGE_MONTH_INC
     public int Month { get; }
 }
 
-public class MessageBus
+public class MessageBus : IDisposable
 {
     private Dictionary<Type, List<(object, MethodInfo)>> dictionary = new Dictionary<Type, List<(object, MethodInfo)>>();
 
@@ -107,6 +77,11 @@ public class MessageBus
 
             dictionary[msgType].Add((session, method));
         }
+    }
+
+    public void Dispose()
+    {
+        dictionary.Clear();
     }
 
     internal void Publish<T>(T message)
@@ -142,14 +117,24 @@ public class Command : ICommand
     }
 }
 
-public class NextTurnCommand : ICommand
+public class ModelObject : IDisposable
 {
-    public event PropertyChangedEventHandler PropertyChanged;
+    protected MessageBus messageBus;
+    private CompositeDisposable disposables = new CompositeDisposable();
 
-    public bool isEnable { get; set; } = true;
-
-    public void Exec()
+    public ModelObject()
     {
-        isEnable = false;
+        messageBus = new MessageBus(this);
+    }
+
+    public void Dispose()
+    {
+        disposables.Dispose();
+        messageBus.Dispose();
+    }
+
+    protected void Subcribe<T>(IObservable<T> observable, Action<T> p)
+    {
+        disposables.Add(observable.Subscribe(p));
     }
 }

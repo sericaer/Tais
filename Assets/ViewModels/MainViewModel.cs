@@ -10,7 +10,16 @@
             view.month.BindOneWay(x => x.text).From(model, model => model.date.month, (num) => num.ToString()).RegistTo(this);
             view.year.BindOneWay(x => x.text).From(model, model => model.date.year, (num) => num.ToString()).RegistTo(this);
 
-            view.nextTurnButton.BindCommand().From(model.nextTurnCommand).RegistTo(this);
+            var nextTurnCommand = new Command()
+            {
+                action = () =>
+                {
+                    model.isRunning = true;
+                }
+            };
+
+            nextTurnCommand.BindOneWay(x => x.isEnable).From(model, model => model.isRunning, flag => !flag).RegistTo(this);
+            view.nextTurnButton.BindCommand().From(nextTurnCommand).RegistTo(this);
         }
     }
 }
