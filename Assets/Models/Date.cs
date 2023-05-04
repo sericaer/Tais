@@ -26,7 +26,7 @@ public class Date : INotifyPropertyChanged
         private set
         {
             _month = value;
-            if (_month > 4)
+            if (_month > 12)
             {
                 year += 1;
                 _month = 1;
@@ -53,6 +53,7 @@ public class Date : INotifyPropertyChanged
                 month += 1;
                 _day = 1;
 
+                //messageBus.Publish(new MESSAGE_MONTH_INC(year, month));
                 //SendMessage(new MESSAGE_MONTH_INC(year, month));
             }
         }

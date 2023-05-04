@@ -34,6 +34,6 @@ public class MainScene : MonoBehaviour
 
     void Update()
     {
-        session.date.DaysInc();
+        session.Run();
     }
 }
