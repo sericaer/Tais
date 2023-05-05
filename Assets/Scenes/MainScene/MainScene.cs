@@ -1,3 +1,4 @@
+using CommandTerminal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,6 +17,9 @@ public class MainScene : MonoBehaviour
 
     void Awake()
     {
+
+        Terminal.Shell.RegisterCommands(typeof(Commands));
+
         view2ViewModel = AppDomain.CurrentDomain.GetAssemblies()
                                 .Where(a => a.GetName().Name == "ViewModels")
                                 .SelectMany(a => a.GetTypes())
