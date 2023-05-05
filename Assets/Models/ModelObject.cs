@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reactive.Disposables;
 
@@ -8,6 +9,9 @@ public class ModelObject : IDisposable, INotifyPropertyChanged
 
     protected MessageBus messageBus;
     private CompositeDisposable disposables = new CompositeDisposable();
+
+    private ModelObject parent;
+    private List<ModelObject> children;
 
     public ModelObject()
     {
@@ -19,12 +23,33 @@ public class ModelObject : IDisposable, INotifyPropertyChanged
     {
         messageBus = parent.messageBus;
         messageBus.Regist(this);
+
+        this.parent = parent;
+        if(parent.children == null)
+        {
+            parent.children = new List<ModelObject>();
+        }
+
+        parent.children.Add(this);
     }
 
     public void Dispose()
     {
         disposables.Dispose();
         messageBus.UnRegist(this);
+
+        parent.children.Remove(this);
+        parent = null;
+
+        if (children != null)
+        {
+            foreach(var child in children)
+            {
+                child.Dispose();
+            }
+
+            children.Clear();
+        }
     }
 
     protected void Subscribe<T>(IObservable<T> observable, Action<T> p)

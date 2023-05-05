@@ -11,6 +11,8 @@ public class Session : ModelObject
 
     public Date date { get; } = new Date();
 
+    public Player player { get; } = new Player();
+
     public Session()
     {
         provinces.Add(new Province(new ProvinceInit() 
@@ -60,52 +62,4 @@ public class Session : ModelObject
     {
         isRunning = false;
     }
-}
-
-
-public class Province : ModelObject
-{
-    public string name { get; set; }
-
-    public int popNum { get; private set; }
-
-    public SourceList<Pop> pops { get; } = new SourceList<Pop>();
-
-    public Province(ProvinceInit init, ModelObject parent) : base(parent)
-    {
-        this.name = init.name;
-        foreach(var popInit in init.popInit)
-        {
-            pops.Add(new Pop(popInit, this));
-        }
-
-        Subscribe(pops.Sum(x => x.popNum), num => popNum = num);
-    }
-}
-
-public class Pop : ModelObject
-{
-    public int popNum { get; set; }
-
-    public Pop(PopInit popInit, ModelObject parent) : base(parent)
-    {
-        popNum = popInit.num;
-    }
-
-    [OnMessage]
-    public void OnMESSAGE_DAY_INC(MESSAGE_DAY_INC msg)
-    {
-        popNum++;
-    }
-}
-
-public class ProvinceInit
-{
-    public string name;
-    public PopInit[] popInit;
-}
-
-public class PopInit
-{
-    public int num;
 }

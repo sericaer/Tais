@@ -7,6 +7,8 @@ public class MainView : View
     public Text month;
     public Text day;
 
+    public Slider playerEnergy;
+
     public MapDialogView mapDialogView;
 
     public Button nextTurnButton;

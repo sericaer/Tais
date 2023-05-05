@@ -32,6 +32,12 @@ namespace ViewModes
             return new BinderCommand(button);
         }
 
+        public static BinderSliderOneWary<TFrom> BindToOneWay<TFrom>(this Slider slider, TFrom from, Expression<Func<TFrom, double>> fromProperty)
+                where TFrom : class, INotifyPropertyChanged
+        {
+            return new BinderSliderOneWary<TFrom>(slider, from, fromProperty);
+        }
+
         public static BinderText1<TFrom, TFromProperty> BindTo<TFrom, TFromProperty>(this Text text, TFrom from, Expression<Func<TFrom, TFromProperty>> fromProperty)
                         where TFrom : class, INotifyPropertyChanged
         {
@@ -47,6 +53,27 @@ namespace ViewModes
     where TItemView : CollectionItemView
         {
             return new BinderCollection<TItemView, TItemModel>(itemView, observableList);
+        }
+    }
+
+    public class BinderSliderOneWary<TFrom>
+        where TFrom : class, INotifyPropertyChanged
+    {
+        private Slider slider;
+        private TFrom from;
+        private Expression<Func<TFrom, double>> fromProperty;
+
+        public BinderSliderOneWary(Slider slider, TFrom from, Expression<Func<TFrom, double>> fromProperty)
+        {
+            this.slider = slider;
+            this.from = from;
+            this.fromProperty = fromProperty;
+        }
+
+        public void RegistTo(IViewModel viewModel)
+        {
+            var dispose = from.BindOneWay(slider, fromProperty, slider => slider.value, value=>(float)value);
+            viewModel.AddSubcrible(dispose);
         }
     }
 

@@ -12,6 +12,8 @@ namespace ViewModes
             view.month.BindTo(model.date, date => date.month).RegistTo(this);
             view.year.BindTo(model.date, date => date.year).RegistTo(this);
 
+            view.playerEnergy.BindToOneWay(model.player, player => player.energy.currValue).RegistTo(this);
+
             var nextTurnCommand = new Command()
             {
                 action = () =>
