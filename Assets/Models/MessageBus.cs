@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-public class MessageBus : IDisposable
+public class MessageBus
 {
     private Dictionary<Type, List<(object, MethodInfo)>> dictionary = new Dictionary<Type, List<(object, MethodInfo)>>();
 
-    public MessageBus(object session)
+    internal void Regist(object obj)
     {
-        var methods = session.GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+        var methods = obj.GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
-        foreach(var method in methods.Where(m=>m.GetCustomAttribute<OnMessageAttribute>() != null))
+        foreach (var method in methods.Where(m => m.GetCustomAttribute<OnMessageAttribute>() != null))
         {
             var parameters = method.GetParameters();
-            if(parameters.Length != 1)
+            if (parameters.Length != 1)
             {
                 throw new Exception();
             }
@@ -25,13 +25,16 @@ public class MessageBus : IDisposable
                 dictionary.Add(msgType, new List<(object, MethodInfo)>());
             }
 
-            dictionary[msgType].Add((session, method));
+            dictionary[msgType].Add((obj, method));
         }
     }
 
-    public void Dispose()
+    internal void UnRegist(object obj)
     {
-        dictionary.Clear();
+        foreach(var list in dictionary.Values)
+        {
+            list.RemoveAll(x => x.Item1 == obj);
+        }
     }
 
     internal void Publish<T>(T message)

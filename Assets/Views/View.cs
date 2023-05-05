@@ -21,15 +21,33 @@ public abstract class View : MonoBehaviour, IView
     private object _model;
     private IViewModel viewModel;
 
-    void Start()
+    protected virtual void Awake()
+    {
+
+    }
+
+    protected virtual void Start()
     {
         if (_model == null)
         {
-            Debug.Log($"{name} model is null");
+            Debug.LogWarning($"{name} model is null");
             return;
         }
 
-        viewModel = Activator.CreateInstance(GetViewModelType(GetType())) as IViewModel;
+        if(GetViewModelType == null)
+        {
+            Debug.LogWarning($"GetViewModelType is null");
+            return;
+        }
+
+        var viewModelType = GetViewModelType(GetType());
+        if (viewModelType == null)
+        {
+            Debug.LogWarning($"GetViewModelType(GetType()) is null");
+            return;
+        }
+
+        viewModel = Activator.CreateInstance(viewModelType) as IViewModel;
         viewModel.BindContext(this, _model);
     }
 

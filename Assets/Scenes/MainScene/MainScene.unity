@@ -2407,6 +2407,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69d897d813947424cb12cc25786843a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  provinceItemView: {fileID: 1482758810}
 --- !u!225 &442681031
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -3421,9 +3422,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 575729300}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e24ec8c338ac64e4e8b4491597db8235, type: 3}
+  m_Script: {fileID: 11500000, guid: 5ff903ff762396346bb6b40eb4e42ca4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  popItemView: {fileID: 2030270189}
 --- !u!1 &598951431
 GameObject:
   m_ObjectHideFlags: 0
@@ -5337,7 +5339,6 @@ GameObject:
   - component: {fileID: 959180068}
   - component: {fileID: 959180067}
   - component: {fileID: 959180069}
-  - component: {fileID: 959180070}
   m_Layer: 5
   m_Name: PopContainer
   m_TagString: Untagged
@@ -5430,18 +5431,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &959180070
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 959180065}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7625cd27dae52240a36a132950a889b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &968067449
 GameObject:
   m_ObjectHideFlags: 0
@@ -5626,7 +5615,6 @@ GameObject:
   - component: {fileID: 971433716}
   - component: {fileID: 971433715}
   - component: {fileID: 971433718}
-  - component: {fileID: 971433719}
   m_Layer: 5
   m_Name: CloseButton
   m_TagString: Untagged
@@ -5653,7 +5641,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 40, y: 40}
+  m_SizeDelta: {x: 35, y: 35}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &971433715
 MonoBehaviour:
@@ -5699,10 +5687,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 442681025}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 442681030}
+        m_TargetAssemblyTypeName: DialogView, Views
+        m_MethodName: OnClose
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5769,18 +5757,6 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
---- !u!114 &971433719
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 971433713}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abf6a80fea0c6fd4a94f38bee99fde23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &978003421
 GameObject:
   m_ObjectHideFlags: 0
@@ -8505,9 +8481,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1482758808}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c53367a0b59ab494fbbb71d66c3f729e, type: 3}
+  m_Script: {fileID: 11500000, guid: 33b95f6ea2cced245b444717055a8048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  provName: {fileID: 864984900}
+  popNum: {fileID: 119351870}
+  provinceDialogView: {fileID: 575729305}
 --- !u!225 &1482758811
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -8589,7 +8568,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1482758814}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1482758810}
+        m_TargetAssemblyTypeName: ProvinceItemView, Views
+        m_MethodName: OnShowProvinceDialog
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1482758814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9197,7 +9188,6 @@ GameObject:
   - component: {fileID: 1581800796}
   - component: {fileID: 1581800795}
   - component: {fileID: 1581800797}
-  - component: {fileID: 1581800798}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -9289,18 +9279,6 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
---- !u!114 &1581800798
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1581800793}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2e1b3d4e9f71cb4f97b512707a79887, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1585636291
 GameObject:
   m_ObjectHideFlags: 0
@@ -10120,7 +10098,6 @@ GameObject:
   - component: {fileID: 1653280617}
   - component: {fileID: 1653280616}
   - component: {fileID: 1653280615}
-  - component: {fileID: 1653280614}
   m_Layer: 5
   m_Name: CloseButton
   m_TagString: Untagged
@@ -10149,18 +10126,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 40, y: 40}
   m_Pivot: {x: 0, y: 1}
---- !u!114 &1653280614
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1653280612}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abf6a80fea0c6fd4a94f38bee99fde23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1653280615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10224,7 +10189,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1653280617}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 575729305}
+        m_TargetAssemblyTypeName: DialogView, Views
+        m_MethodName: OnClose
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1653280617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12113,7 +12090,7 @@ GameObject:
   - component: {fileID: 2030270183}
   - component: {fileID: 2030270186}
   - component: {fileID: 2030270188}
-  - component: {fileID: 2030270187}
+  - component: {fileID: 2030270189}
   m_Layer: 5
   m_Name: PopItem
   m_TagString: Untagged
@@ -12251,18 +12228,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &2030270187
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2030270181}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1f3a63b4d40a244999f546efd657678, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!225 &2030270188
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -12275,6 +12240,19 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &2030270189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030270181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e478a8c64c3d3c74ab16113adb4c0d29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  popNum: {fileID: 823539147}
 --- !u!1 &2033639727
 GameObject:
   m_ObjectHideFlags: 0

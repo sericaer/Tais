@@ -11,17 +11,24 @@ public class ModelObject : IDisposable, INotifyPropertyChanged
 
     public ModelObject()
     {
-        messageBus = new MessageBus(this);
+        messageBus = new MessageBus();
+        messageBus.Regist(this);
+    }
+
+    public ModelObject(ModelObject parent)
+    {
+        messageBus = parent.messageBus;
+        messageBus.Regist(this);
     }
 
     public void Dispose()
     {
         disposables.Dispose();
-        messageBus.Dispose();
+        messageBus.UnRegist(this);
     }
 
-    protected void Subcribe<T>(IObservable<T> observable, Action<T> p)
+    protected void Subscribe<T>(IObservable<T> observable, Action<T> p)
     {
         disposables.Add(observable.Subscribe(p));
     }
-}
+} 

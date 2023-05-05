@@ -22,7 +22,14 @@ public class MainScene : MonoBehaviour
                                 .Where(type => type.BaseType.IsGenericType && type.BaseType.GetGenericTypeDefinition() == typeof(ViewModes.ViewModel<,>))
                                 .ToDictionary(type => type.BaseType.GetGenericArguments()[0], type => type);
 
-        View.GetViewModelType = (viewType) => view2ViewModel[viewType];
+        View.GetViewModelType = (viewType) =>
+        {
+            if(view2ViewModel.TryGetValue(viewType, out Type value))
+            {
+                return value;
+            }
+            return null;
+        };
     }
 
     void Start()

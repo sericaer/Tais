@@ -1,10 +1,12 @@
-﻿namespace ViewModes
+﻿using DynamicData.Aggregation;
+
+namespace ViewModes
 {
     public class MainViewModel : ViewModel<MainView, Session>
     {
         public override void OnBindContext(MainView view, Session model)
         {
-            view.popNum.BindTo(model, model => model.popNum).RegistTo(this);
+            view.popNum.BindTo(model.provinces.Sum(x=>x.popNum)).RegistTo(this);
 
             view.day.BindTo(model.date, date => date.day).RegistTo(this);
             view.month.BindTo(model.date, date => date.month).RegistTo(this);
