@@ -7,21 +7,24 @@ public class Player : Entity
 {
     public EValue energy { get;}
 
-    public SourceList<Task> task = new SourceList<Task>();
+    public SourceList<Task> tasks { get; } = new SourceList<Task>();
 
     public Player()
     {
-        energy = new EValue(15, EffectType.Energy, this);
+        energy = new EValue(100, EffectType.Energy, this);
 
-        Subscribe(task.Connect().OnItemAdded(item =>
+        Subscribe(tasks.Connect().OnItemAdded(item =>
         {
             effectPool.Add(item.energyEffect);
         }), _=> { });
 
-        Subscribe(task.Connect().OnItemRemoved(item =>
+        Subscribe(tasks.Connect().OnItemRemoved(item =>
         {
             effectPool.Remove(item.energyEffect);
         }), _ => { });
+
+        tasks.Add(new Task() { energyEffect = new Effect() { type = EffectType.Energy, value = -0.08 } });
+        tasks.Add(new Task() { energyEffect = new Effect() { type = EffectType.Energy, value = -0.08 } });
     }
 }
 
@@ -38,7 +41,7 @@ public class Entity : ModelObject
 public class EValue : ModelObject
 {
     public double baseValue { get; private set; }
-    public double currValue { get; }
+    public double currValue { get; private set; }
     public EffectType obsEffectType { get; }
 
     public IObservableList<Effect> effects;
@@ -50,7 +53,7 @@ public class EValue : ModelObject
 
         this.effects = owner.effectPool.Connect().Filter(x => x.type == effectType).AsObservableList();
 
-        Subscribe(effects.Connect().Sum(x => x.value), sum => baseValue = baseValue * (1 + sum));
+        Subscribe(effects.Connect().Sum(x => x.value), sum => currValue = baseValue * (1 + sum));
     }
 }
 

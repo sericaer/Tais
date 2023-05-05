@@ -14,6 +14,8 @@ namespace ViewModes
 
             view.playerEnergy.BindToOneWay(model.player, player => player.energy.currValue).RegistTo(this);
 
+            view.taskItemView.BindCollection(model.player.tasks).RegistTo(this);
+
             var nextTurnCommand = new Command()
             {
                 action = () =>

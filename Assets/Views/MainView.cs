@@ -9,6 +9,8 @@ public class MainView : View
 
     public Slider playerEnergy;
 
+    public TaskItemView taskItemView;
+
     public MapDialogView mapDialogView;
 
     public Button nextTurnButton;
