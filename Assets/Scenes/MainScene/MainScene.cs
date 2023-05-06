@@ -12,12 +12,11 @@ public class MainScene : MonoBehaviour
 
     Session session;
 
-
     private Dictionary<Type, Type> view2ViewModel;
 
     void Awake()
     {
-
+        Commands.GetSession = () => session;
         Terminal.Shell.RegisterCommands(typeof(Commands));
 
         view2ViewModel = AppDomain.CurrentDomain.GetAssemblies()

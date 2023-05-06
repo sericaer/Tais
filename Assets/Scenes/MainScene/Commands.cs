@@ -1,10 +1,13 @@
 ﻿using CommandTerminal;
+using System;
 
 public class Commands
 {
-    [RegisterCommand(Help = "Clear the command console", MaxArgCount = 0)]
-    static void CommandClear1(CommandArg[] args)
+    public static Func<Session> GetSession;
+
+    [RegisterCommand(Help = "AddTask", MinArgCount = 1)]
+    static void AddTask(CommandArg[] args)
     {
-        Terminal.Buffer.Clear();
+        GetSession().PublishMessage(new MESSAGE_ADD_TASK(new TaskDef() { energy = args[0].Int }));
     }
 }

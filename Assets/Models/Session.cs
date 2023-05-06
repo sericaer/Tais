@@ -1,5 +1,6 @@
 using DynamicData;
 using DynamicData.Binding;
+using System;
 
 public class Session : ModelObject
 {
@@ -11,10 +12,12 @@ public class Session : ModelObject
 
     public Date date { get; } = new Date();
 
-    public Player player { get; } = new Player();
+    public Player player { get; }
 
     public Session()
     {
+        player = new Player(this);
+
         provinces.Add(new Province(new ProvinceInit() 
         { 
             name = "P1", 
@@ -55,6 +58,11 @@ public class Session : ModelObject
         {
             date.DaysInc();
         }
+    }
+
+    public void PublishMessage(MESSAGE_ADD_TASK message)
+    {
+        messageBus.Publish(message);
     }
 
     [OnMessage]

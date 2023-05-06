@@ -43,7 +43,7 @@ public abstract class View : MonoBehaviour, IView
         var viewModelType = GetViewModelType(GetType());
         if (viewModelType == null)
         {
-            Debug.LogWarning($"GetViewModelType(GetType()) is null");
+            Debug.LogWarning($"GetViewModelType({GetType()}) is null");
             return;
         }
 

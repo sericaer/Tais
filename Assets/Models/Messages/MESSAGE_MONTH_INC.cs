@@ -23,3 +23,13 @@ public class MESSAGE_DAY_INC
     public int Month { get; }
     public int DAY { get; }
 }
+
+public class MESSAGE_ADD_TASK
+{
+    public TaskDef def { get; }
+
+    public MESSAGE_ADD_TASK(TaskDef def)
+    {
+        this.def = def;
+    }
+}

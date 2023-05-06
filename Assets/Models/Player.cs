@@ -2,6 +2,7 @@
 using DynamicData.Aggregation;
 using System.ComponentModel;
 using System;
+using System.Linq;
 
 public class Player : Entity
 {
@@ -9,33 +10,76 @@ public class Player : Entity
 
     public SourceList<Task> tasks { get; } = new SourceList<Task>();
 
-    public Player()
+    public Player(ModelObject parent) : base(parent)
     {
         energy = new EValue(100, EffectType.Energy, this);
 
-        Subscribe(tasks.Connect().OnItemAdded(item =>
-        {
-            effectPool.Add(item.energyEffect);
-        }), _=> { });
+        Subscribe(tasks.Connect().Transform(x => x.energyEffect), changedSet => effectPool.OnChange(changedSet));
+    }
 
-        Subscribe(tasks.Connect().OnItemRemoved(item =>
-        {
-            effectPool.Remove(item.energyEffect);
-        }), _ => { });
+    [OnMessage]
+    void OnMESSAGE_ADD_TASK(MESSAGE_ADD_TASK msg)
+    {
+        tasks.Add(new Task(msg.def));
+    }
+}
 
-        tasks.Add(new Task() { energyEffect = new Effect() { type = EffectType.Energy, value = -0.08 } });
-        tasks.Add(new Task() { energyEffect = new Effect() { type = EffectType.Energy, value = -0.08 } });
+
+public static class SourceListExtension
+{
+    public static void OnChange<T>(this SourceList<T> sourceList, IChangeSet<T> changeSet)
+    {
+        foreach (var changed in changeSet)
+        {
+            switch(changed.Reason)
+            {
+                case ListChangeReason.Add:
+                    sourceList.Add(changed.Item.Current);
+                    break;
+                case ListChangeReason.Remove:
+                    sourceList.Remove(changed.Item.Current);
+                    break;
+                case ListChangeReason.AddRange:
+                    sourceList.AddRange(changed.Range);
+                    break;
+                case ListChangeReason.RemoveRange:
+                    sourceList.RemoveMany(changed.Range);
+                    break;
+                default:
+                    throw new Exception();
+            }
+        }
     }
 }
 
 public class Task
 {
     public Effect energyEffect;
+
+    public Task(TaskDef def)
+    {
+        energyEffect = new Effect()
+        {
+            effectType = EffectType.Energy,
+            valueType = ValueType.Fixed,
+            value = def.energy * -1
+        };
+    }
+}
+
+public class TaskDef
+{
+    public double energy;
 }
 
 public class Entity : ModelObject
 {
     public SourceList<Effect> effectPool = new SourceList<Effect>();
+
+    public Entity(ModelObject parent) : base(parent)
+    {
+
+    }
 }
 
 public class EValue : ModelObject
@@ -51,9 +95,15 @@ public class EValue : ModelObject
         this.baseValue = baseValue;
         this.currValue = baseValue;
 
-        this.effects = owner.effectPool.Connect().Filter(x => x.type == effectType).AsObservableList();
+        this.effects = owner.effectPool.Connect().Filter(x => x.effectType == effectType).AsObservableList();
 
-        Subscribe(effects.Connect().Sum(x => x.value), sum => currValue = baseValue * (1 + sum));
+        Subscribe(effects.Connect(), _=> 
+        {
+            var percent = effects.Items.Where(x => x.valueType == ValueType.Percent).Sum(x => x.value);
+            var Fixed = effects.Items.Where(x => x.valueType == ValueType.Fixed).Sum(x => x.value);
+
+            currValue = baseValue * (1 + percent) + Fixed;
+        });
     }
 }
 
@@ -62,8 +112,15 @@ public enum EffectType
     Energy
 }
 
+public enum ValueType
+{
+    Percent,
+    Fixed
+}
+
 public class Effect
 {
-    public EffectType type;
+    public EffectType effectType;
+    public ValueType valueType;
     public double value;
 }
